@@ -6,7 +6,7 @@
     "edispring <edi.spring@lambda-it.ch>"
   ],
   "description": "angular translate directive and service",
-  "main": "index.js",
+  "main": "dist/ng-translate.js",
   "keywords": [
     "angular",
     "translate",

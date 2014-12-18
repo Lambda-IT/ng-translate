@@ -17,7 +17,7 @@ var del = require('del'),
     glob = require('glob');
 
 
-var name = 'ng-translate';
+var name = 'ngTranslate';
 var dest = './dist';
 var temp = './.tmp';
 var src = './src';
