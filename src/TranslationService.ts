@@ -28,7 +28,10 @@ module Service {
 
             this.getTranslationByNamespace = function (obj: any, path: string): any {
                 var current = obj;
-                _.forEach(path.split('.'), function (p) { current = current[p]; });
+                _.forEach(path.split('.'), function (p) {
+                    if (current)
+                        current = current[p];
+                });
                 return current;
             }
 
