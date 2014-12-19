@@ -30,4 +30,6 @@ node_modules
 
 # Bower
 bower_components
+
 *.suo
+*.bak

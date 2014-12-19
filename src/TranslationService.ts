@@ -77,4 +77,9 @@ module Service {
         }
 
     }
+
+    export interface IKeyValue {
+        key: string;
+        value: string;
+    }
 }

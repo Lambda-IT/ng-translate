@@ -43,7 +43,9 @@ gulp.task('typings', function () {
                            noExternalResolve: false
                        }));
 
-    return tsResult.dts.pipe(gulp.dest('dist/definitions'));
+    return tsResult.dts
+    .pipe($.concat(name + '.d.ts'))
+    .pipe(gulp.dest('dist/definitions'));
 });
 
 //gulp.task(name + '-scripts', function () {
