@@ -2,7 +2,7 @@ module Service {
 
     export class TranslationService {
 
-        private static $inject = ["$rootScope"];
+        static $inject = ["$rootScope"];
 
         private $rootScope: ng.IRootScopeService;
 
@@ -11,6 +11,8 @@ module Service {
         public currentLanguage: string = null;
 
         private defaultLang: string;
+
+        private getTranslationByNamespace: (obj: any, path: string) => any;
 
         constructor($rootScope: ng.IRootScopeService) {
             this.$rootScope = $rootScope;
@@ -23,6 +25,12 @@ module Service {
 
             this.defaultLang = this.defaultLang ? _.head(this.defaultLang.split("-")) || "en" : "en";
             this.setLanguage(this.defaultLang);
+
+            this.getTranslationByNamespace = function (obj: any, path: string): any {
+                var current = obj;
+                _.forEach(path.split('.'), function (p) { current = current[p]; });
+                return current;
+            }
 
             this.setLanguage = this.setLanguage.bind(this);
         }
@@ -46,7 +54,9 @@ module Service {
         }
 
         public getTranslation(key): string {
-            var translation = TranslationService.translations[key];
+            var _this = this;
+
+            var translation = _this.getTranslationByNamespace(TranslationService.translations, key);
 
             if (typeof translation == 'object')
                 translation = translation['Text'] || translation['Content'];

@@ -1,12 +1,12 @@
 {
   "name": "ng-translate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/Lambda-IT/ng-translate",
   "authors": [
     "edispring <edi.spring@lambda-it.ch>"
   ],
   "description": "angular translate directive and service",
-  "main": "dist/ng-translate.js",
+  "main": "dist/ngTranslate.js",
   "keywords": [
     "angular",
     "translate",
