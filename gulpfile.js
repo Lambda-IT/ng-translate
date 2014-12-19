@@ -36,6 +36,16 @@ gulp.task('tscripts', function () {
     return tsResult.js.pipe(gulp.dest(temp + "/scripts"));
 });
 
+gulp.task('typings', function () {
+    var tsResult = gulp.src([src + '/**/*.ts', './typings/**/*.ts'])
+                       .pipe($.typescript({
+                           declarationFiles: true,
+                           noExternalResolve: false
+                       }));
+
+    return tsResult.dts.pipe(gulp.dest('dist/definitions'));
+});
+
 //gulp.task(name + '-scripts', function () {
 //    return gulp.src(temp + '/**/*.js')
 //        .pipe($.size());
@@ -55,11 +65,11 @@ gulp.task('partials', function () {
         .pipe($.size());
 });
 
-gulp.task('finalise', ['clean', 'tscripts', 'partials'], function () {
+gulp.task('finalise', ['clean', 'tscripts','typings', 'partials'], function () {
     return gulp.src(temp + '/**/*.js')
         .pipe($.order([
             "scripts/*.js",
-            "scripts/module/*.js",
+            "scripts/index.js",
             "partials/*.js"
         ]))
     .pipe($.uglify({ preserveComments: false, mangle: false }))
