@@ -30,7 +30,8 @@ gulp.task('tscripts', function () {
     var tsResult = gulp.src([src + '/**/*.ts', './typings/**/*.ts'])
                        .pipe($.typescript({
                            declarationFiles: false,
-                           noExternalResolve: false
+                           noExternalResolve: false,
+                           target: 'ES3'
                        }));
 
     return tsResult.js.pipe(gulp.dest(temp + "/scripts"));
@@ -74,13 +75,22 @@ gulp.task('finalise', ['clean', 'tscripts','typings', 'partials'], function () {
             "scripts/index.js",
             "partials/*.js"
         ]))
-    .pipe($.uglify({ preserveComments: false, mangle: false }))
+    //.pipe($.uglify({ preserveComments: false, mangle: false }))
     .pipe($.concat(name + ".js"))
     .pipe($.size())
     .pipe(gulp.dest(dest));
 });
 
 gulp.task('build', ['finalise']);
+
+var karma = require('karma').server;
+
+gulp.task('test', ['finalise'], function (done) {
+    karma.start({
+        configFile: __dirname + '/karma.config.js',
+        singleRun: true
+    }, done);
+});
 
 
 gulp.task('default', ['build']);

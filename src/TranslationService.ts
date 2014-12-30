@@ -1,3 +1,9 @@
+interface IMoment {
+    locale(lang: string)
+}
+
+declare var moment: IMoment;
+
 module Service {
 
     export class TranslationService {
@@ -23,17 +29,8 @@ module Service {
                 console.log(ex);
             }
 
-            this.defaultLang = this.defaultLang ? _.head(this.defaultLang.split("-")) || "en" : "en";
+            this.defaultLang = this.defaultLang ? this.defaultLang.split("-")[0] || "en" : "en";
             this.setLanguage(this.defaultLang);
-
-            this.getTranslationByNamespace = function (obj: any, path: string): any {
-                var current = obj;
-                _.forEach(path.split('.'), function (p) {
-                    if (current)
-                        current = current[p];
-                });
-                return current;
-            }
 
             this.setLanguage = this.setLanguage.bind(this);
         }
@@ -44,13 +41,16 @@ module Service {
             if (!_this.currentLanguage && !languageCode) {
                 _this.currentLanguage = _this.defaultLang;
             } else {
-                if (_this.currentLanguage == languageCode) return;
+                if (_this.currentLanguage === languageCode) return;
                 _this.currentLanguage = languageCode;
                 if (!_this.currentLanguage) _this.currentLanguage = _this.defaultLang;
             }
 
             TranslationService.translations = null;
-            moment.locale(_this.currentLanguage);
+
+            if (window['moment'] !== undefined) {
+                moment.locale(_this.currentLanguage);
+            }
 
             TranslationService.translations = Translations[_this.currentLanguage];
             _this.$rootScope.$broadcast("languageChanged");
@@ -59,7 +59,7 @@ module Service {
         public getTranslation(key): string {
             var _this = this;
 
-            var translation = _this.getTranslationByNamespace(TranslationService.translations, key);
+            var translation = TranslationService.getTranslationByNamespace(TranslationService.translations, key);
 
             if (typeof translation == 'object')
                 translation = translation['Text'] || translation['Content'];
@@ -73,12 +73,36 @@ module Service {
             return TranslationService.translations;
         }
 
-        public getTranslations(): IKeyValue[] {
-            return _.forIn(TranslationService.translations, (k, v) => {
-                return { key: k, value: v };
-            });
+        static getTranslationByNamespace(obj: any, path: string) {
+            var current = obj;
+            var pathParts = path.split('.');
+
+            for (var ix in pathParts) {
+                if (current)
+                    current = current[pathParts[ix]];
+            }
+            
+            return current;
         }
 
+        static getTranslationKeys(obj: any, path: string) {
+            path = path || '';
+            var ret = [];
+            for (var prop in obj) {
+                if (typeof obj[prop] === "string")
+                    ret.push((path === '' ? '' : path + '.') + prop);
+                else if (typeof obj[prop] === "object") {
+                    ret.push(TranslationService.getTranslationKeys(obj[prop], (path === '' ? '' : path + '.') + prop));
+                }
+            }
+
+            return ret;
+        }
+
+        public getTranslations(): IKeyValue[] {
+            if (this.areTranslationsLoaded())
+                return TranslationService.getTranslationKeys(TranslationService.translations, null)[0].map(k => <IKeyValue>{ key: k, value: TranslationService.getTranslationByNamespace(TranslationService.translations, k) });
+        }
     }
 
     export interface IKeyValue {
