@@ -4,7 +4,7 @@ interface IMoment {
 
 declare var moment: IMoment;
 
-module Service {
+module Services {
 
     export class TranslationService {
 
@@ -81,7 +81,7 @@ module Service {
                 if (current)
                     current = current[pathParts[ix]];
             }
-            
+
             return current;
         }
 

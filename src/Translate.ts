@@ -1,13 +1,13 @@
 module Directive {
-    export function createTranslate($rootScope: ng.IRootScopeService, translationService: Service.TranslationService): ng.IDirective {
+    export function createTranslate($rootScope: ng.IRootScopeService, translationService: Services.TranslationService): ng.IDirective {
         return new Translate($rootScope, translationService);
     }
 
     createTranslate['$inject'] = ["$rootScope", "translationService"];
 
     class Translate {
-        
-        constructor($rootScope: ng.IRootScopeService, translationService: Service.TranslationService) {
+
+        constructor($rootScope: ng.IRootScopeService, translationService: Services.TranslationService) {
             var directive: ng.IDirective = {};
 
             directive.restrict = "A";
@@ -22,7 +22,7 @@ module Directive {
             return directive;
         }
 
-        static updateTranslation(ele, key, translationService: Service.TranslationService) {
+        static updateTranslation(ele, key, translationService: Services.TranslationService) {
             ele.html(translationService.getTranslation(key));
         }
     }

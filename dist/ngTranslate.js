@@ -24,8 +24,8 @@ var Directive;
     })();
 })(Directive || (Directive = {}));
 
-var Service;
-(function (Service) {
+var Services;
+(function (Services) {
     var TranslationService = (function () {
         function TranslationService($rootScope) {
             this.currentLanguage = null;
@@ -99,9 +99,9 @@ var Service;
         TranslationService.$inject = ["$rootScope"];
         return TranslationService;
     })();
-    Service.TranslationService = TranslationService;
-})(Service || (Service = {}));
+    Services.TranslationService = TranslationService;
+})(Services || (Services = {}));
 
 var app = angular.module("ngTranslate", []).constant('MODULE_VERSION', '0.0.1');
-app.service('translationService', Service.TranslationService);
+app.service('translationService', Services.TranslationService);
 app.directive('translate', Directive.createTranslate);

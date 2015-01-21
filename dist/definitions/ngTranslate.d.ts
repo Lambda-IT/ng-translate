@@ -1,12 +1,12 @@
 declare module Directive {
-    function createTranslate($rootScope: ng.IRootScopeService, translationService: Service.TranslationService): ng.IDirective;
+    function createTranslate($rootScope: ng.IRootScopeService, translationService: Services.TranslationService): ng.IDirective;
 }
 
 interface IMoment {
     locale(lang: string): any;
 }
 declare var moment: IMoment;
-declare module Service {
+declare module Services {
     class TranslationService {
         static $inject: string[];
         private $rootScope;
