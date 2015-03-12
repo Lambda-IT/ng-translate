@@ -2,3 +2,4 @@
 
 app.service('translationService', Services.TranslationService);
 app.directive('translate', Directive.createTranslate);
+app.directive('translateHtml', Directive.createTranslateHtml);
