@@ -24,6 +24,33 @@ var Directive;
     })();
 })(Directive || (Directive = {}));
 
+var Directive;
+(function (Directive) {
+    function createTranslateHtml($rootScope, translationService) {
+        return new TranslateHtml($rootScope, translationService);
+    }
+    Directive.createTranslateHtml = createTranslateHtml;
+    Directive.createTranslate['$inject'] = ["$rootScope", "translationService"];
+    var TranslateHtml = (function () {
+        function TranslateHtml($rootScope, translationService) {
+            var directive = {};
+            directive.restrict = "A";
+            directive.link = function (scope, ele, attr) {
+                var key = attr['translate-html'];
+                TranslateHtml.updateTranslation(ele, key, translationService);
+                $rootScope.$on("languageChanged", function () {
+                    TranslateHtml.updateTranslation(ele, key, translationService);
+                });
+            };
+            return directive;
+        }
+        TranslateHtml.updateTranslation = function (ele, key, translationService) {
+            ele.html(translationService.getTranslation(key));
+        };
+        return TranslateHtml;
+    })();
+})(Directive || (Directive = {}));
+
 var Services;
 (function (Services) {
     var TranslationService = (function () {
@@ -54,7 +81,7 @@ var Services;
             }
             TranslationService.translations = null;
             if (window['moment'] !== undefined) {
-                moment.locale(_this.currentLanguage);
+                window['moment'].locale(_this.currentLanguage);
             }
             TranslationService.translations = Translations[_this.currentLanguage];
             _this.$rootScope.$broadcast("languageChanged");
@@ -105,3 +132,4 @@ var Services;
 var app = angular.module("ngTranslate", []).constant('MODULE_VERSION', '0.0.1');
 app.service('translationService', Services.TranslationService);
 app.directive('translate', Directive.createTranslate);
+app.directive('translateHtml', Directive.createTranslateHtml);

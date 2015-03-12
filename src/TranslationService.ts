@@ -1,9 +1,3 @@
-interface IMoment {
-    locale(lang: string)
-}
-
-declare var moment: IMoment;
-
 module Services {
 
     export class TranslationService {
@@ -49,7 +43,7 @@ module Services {
             TranslationService.translations = null;
 
             if (window['moment'] !== undefined) {
-                moment.locale(_this.currentLanguage);
+                window['moment'].locale(_this.currentLanguage);
             }
 
             TranslationService.translations = Translations[_this.currentLanguage];

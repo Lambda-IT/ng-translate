@@ -14,9 +14,9 @@ module Directive {
 
             directive.link = (scope: ng.IScope, ele, attr) => {
                 var key = attr['translate-html'];
-                Translate.updateTranslation(ele, key, translationService);
+                TranslateHtml.updateTranslation(ele, key, translationService);
                 $rootScope.$on("languageChanged", () => {
-                    Translate.updateTranslation(ele, key, translationService);
+                    TranslateHtml.updateTranslation(ele, key, translationService);
                 });
             };
 
