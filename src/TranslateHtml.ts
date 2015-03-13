@@ -13,7 +13,7 @@ module Directive {
             directive.restrict = "A";
 
             directive.link = (scope: ng.IScope, ele, attr) => {
-                var key = attr['translate-html'];
+                var key = attr.translateHtml;
                 TranslateHtml.updateTranslation(ele, key, translationService);
                 $rootScope.$on("languageChanged", () => {
                     TranslateHtml.updateTranslation(ele, key, translationService);

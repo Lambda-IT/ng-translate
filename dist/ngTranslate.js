@@ -36,7 +36,7 @@ var Directive;
             var directive = {};
             directive.restrict = "A";
             directive.link = function (scope, ele, attr) {
-                var key = attr['translate-html'];
+                var key = attr.translateHtml;
                 TranslateHtml.updateTranslation(ele, key, translationService);
                 $rootScope.$on("languageChanged", function () {
                     TranslateHtml.updateTranslation(ele, key, translationService);
